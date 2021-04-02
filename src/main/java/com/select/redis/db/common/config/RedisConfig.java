@@ -1,5 +1,6 @@
 package com.select.redis.db.common.config;
 
+import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -40,7 +41,11 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<Serializable, Object> getRedisTemplate() {
-        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer();
+        // {"@class":"com.select.redis.db.bean.UserPo","id":1,"name":"AA","address":"A12345678"}
+        // GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer();
+
+        // {"@type":"com.select.redis.db.bean.UserPo","address":"A12345678","id":1,"name":"AA"}
+        GenericFastJsonRedisSerializer serializer = new GenericFastJsonRedisSerializer();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(serializer);
